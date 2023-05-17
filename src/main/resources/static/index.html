@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form th:action="@{/contact}" method="post" th:object="${contact}">
+        <label for="name">Please enter your name</label>
+        <input type="text" th:field="*{name}" name="name" minlength="3" maxlength="64">
+        <label for="email">Please enter your email</label>
+        <input type="email" th:field="*{email}" name="email">
+        <label for="tel">Please enter your phone number</label>
+        <input type="tel" th:field="*{tel}" name="tel" pattern="[8-9]{1}[0-9]{7}">
+        <label for="dob">Please enter your date of birth</label>
+        <input type="date" th:field="*{dob}" name="dob">
+    </form>
+</body>
+</html>
