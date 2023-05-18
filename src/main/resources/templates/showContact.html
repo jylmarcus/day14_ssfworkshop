@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+</head>
+<body>
+    Name: <p th:text=${contact.name} />
+    Email: <p th:text="${contact.email}" />
+    Phone Number: <p th:text="${contact.tel}" />
+    Date of Birth: <p th:text="${contact.dob}" />
+
+    <p th:text="${successMessage}" th:if="${successMessage != null}" />
+    <a href="/">Add more contacts</a>
+    <a href="/contacts">Show contacts list</a>
+</body>
+</html>

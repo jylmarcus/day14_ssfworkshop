@@ -4,9 +4,25 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Contacts List</title>
 </head>
 <body>
-    
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Date of Birth</th>
+        </tr>
+        <tr th:each="contact: ${contactList}">
+            <td><a th:text="${contact.id}" th:href="@{'/contacts/' + ${contact.id}}"></a></td>
+            <td th:text="${contact.name}" />
+            <td th:text="${contact.email}" />
+            <td th:text="${contact.tel}" />
+            <td th:text="${contact.dob}" />
+        </tr>
+    </table>
+    <a href="/addContact">Add more contacts</a>
 </body>
 </html>

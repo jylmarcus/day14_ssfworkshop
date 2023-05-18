@@ -1,11 +1,14 @@
 package sg.visa.ssf.day13_ssfworkshop.model;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Random;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -23,13 +26,17 @@ public class Contacts {
     private String email;
 
     @Size(min = 8, message = "Phone number is invalid")
-    @Pattern(regexp = "[8-9]{1}[0-9][7]")
+    @Pattern(regexp = "[8-9]{1}[0-9]{7}")
     private String tel;
 
     @NotNull(message = "Date of birth cannot be null")
     @Past(message = "Date of birth cannot be beyond today")
     @DateTimeFormat(pattern = "MM-dd-yyyy")
     private LocalDate dob;
+
+    @Min(value = 10, message = "Must be above 10 years old")
+    @Max(value = 100, message = "Must be below 100 years old")
+    private int age;
 
     public Contacts() {
         this.id=generateId();
@@ -49,6 +56,7 @@ public class Contacts {
         int i = 0;
         while(i < 8) {
             s = String.join(s, Integer.toHexString(r.nextInt()));
+            i++;
         }
 
         return s;
@@ -90,7 +98,22 @@ public class Contacts {
         return dob;
     }
 
-    public void setDob(LocalDate dob) {
-        this.dob = dob;
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setDob(LocalDate dateOfBirth) {
+        //calculate the age
+      int calculatedAge = 0;
+      if(dateOfBirth != null){
+        calculatedAge = Period.between(dateOfBirth, LocalDate.now()).getYears();
+      } 
+      this.age = calculatedAge;
+      this.dob = dateOfBirth;
+    }
+
+    @Override
+    public String toString() {
+        return "Contact [name=" + name + ", email=" + email + ", phoneNumber=" + tel + "]";
     }
 }

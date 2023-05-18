@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form th:action="@{/contact}" method="post" th:object="${contact}" modelAttribute="contact">
+        <label for="name">Name:</label>
+        <input type="text" th:field="*{name}" name="name" minlength="3" maxlength="64">
+        <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red
+         ;"></span>
+        <label for="email">Email:</label>
+        <input type="email" th:field="*{email}" name="email">
+        <span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red
+         ;"></span>
+        <label for="tel">Phone Number:</label>
+        <input type="tel" th:field="*{tel}" pattern="[8-9]{1}[0-9]{7}" name="tel">
+        <span class="error" th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" style="color: red
+         ;"></span>
+        <label for="dob">Date of Birth:</label>
+        <input type="date" th:field="*{dob}" name="dob">
+        <span class="error" th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}" style="color: red
+         ;"></span>
+        <br />
+        <span class="error" th:if="${#fields.hasErrors('age')}" th:errors="*{age}" style="color: red
+         ;"></span>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <a href="/contacts">Contacts List</a>
+</body>
+
+</html>
