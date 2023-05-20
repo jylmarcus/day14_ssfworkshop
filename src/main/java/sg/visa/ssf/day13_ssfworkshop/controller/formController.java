@@ -1,6 +1,7 @@
 package sg.visa.ssf.day13_ssfworkshop.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,13 +15,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.validation.Valid;
 import sg.visa.ssf.day13_ssfworkshop.model.Contacts;
-import sg.visa.ssf.day13_ssfworkshop.service.createContact;
+import sg.visa.ssf.day13_ssfworkshop.repository.ContactsRedis;
 
 @Controller
 public class formController {
 
     @Autowired
-    createContact service;
+    ContactsRedis repository;
 
     @Value("${data.dir}")
     private String dataDir;
@@ -37,27 +38,28 @@ public class formController {
             return "addContact";
         }
 
-        service.create(contact, dataDir, model);
+        repository.create(contact, model);
         model.addAttribute("successMessage", "Contact saved successfully, with status code: " +HttpStatus.CREATED +".");
         return "showContact";
     }
 
     @GetMapping("/contacts/{contactId}")
     public String getContactById(Model model, @PathVariable String contactId) {
-        List<Contacts> contactList = service.getContacts(dataDir);
-        Contacts returnContact = contactList.stream().filter(contact -> contactId.equals(contact.getId())).findFirst().orElse(null);
-        if (returnContact == null) {
-            model.addAttribute("errorMessage", "Contact not found");
-            return "error";
-        } 
-        model.addAttribute("contact", returnContact);
-        return "showContact";
+        Optional<Object> contactOpt = repository.getContact(contactId);
+        contactOpt.ifPresentOrElse(
+            contact -> model.addAttribute("contact", Contacts.class.cast(contact)),
+            () -> model.addAttribute("errorMessage", "Contact not found")
+        );
 
+        if(!contactOpt.isPresent()) {
+            return "error";
+        }
+        return "showContact";
     }
 
     @GetMapping("/contacts")
     public String showContacts(Model model){
-        List<Contacts> contactList = service.getContacts(dataDir);
+        List<Contacts> contactList = repository.getAllContacts(model);
         model.addAttribute("contactList", contactList);
         return "contacts";
     }

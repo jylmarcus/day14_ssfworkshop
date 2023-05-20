@@ -1,5 +1,6 @@
 package sg.visa.ssf.day13_ssfworkshop.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Random;
@@ -15,7 +16,7 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public class Contacts {
+public class Contacts implements Serializable{
     private String id;
     @NotNull(message = "Name cannot be null")
     @Size(min = 3, max = 64, message = "Name must be between 3 and 64 characters")
